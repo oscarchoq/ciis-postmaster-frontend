@@ -1,5 +1,5 @@
 
-import { Counter, GridSpeakers } from '@/components';
+import { Counter, GridSpeakers, HeroSection } from '@/components';
 import { getBasePath } from '@/lib';
 import styles from '@/styles/Home.module.css'
 import Image from 'next/image';
@@ -8,8 +8,9 @@ export default async function Home() {
 
   return (
     <>
-
-      <section id='home' className={styles.intro}>
+      <HeroSection />
+      <GridSpeakers />
+      {/* <section id='home' className={styles.intro}>
         <video
           className={styles.videofondo}
           autoPlay
@@ -34,7 +35,7 @@ export default async function Home() {
 
         <GridSpeakers/>
 
-      </section>
+      </section> */}
 
     </>
   );
