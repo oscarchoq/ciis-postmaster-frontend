@@ -1,10 +1,11 @@
 
-import { Counter } from '@/components';
+import { Counter, GridSpeakers } from '@/components';
 import { getBasePath } from '@/lib';
 import styles from '@/styles/Home.module.css'
 import Image from 'next/image';
 
-export default function Home() {
+export default async function Home() {
+
   return (
     <>
 
@@ -30,6 +31,9 @@ export default function Home() {
           <p className={styles.date}>21 de Agosto del 2025</p>
           <Counter />
         </div>
+
+        <GridSpeakers/>
+
       </section>
 
     </>
