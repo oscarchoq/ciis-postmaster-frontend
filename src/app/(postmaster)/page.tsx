@@ -1,4 +1,5 @@
 
+import { Counter } from '@/components';
 import { getBasePath } from '@/lib';
 import styles from '@/styles/Home.module.css'
 import Image from 'next/image';
@@ -8,15 +9,15 @@ export default function Home() {
     <>
 
       <section id='home' className={styles.intro}>
-        <video 
+        <video
           className={styles.videofondo}
           autoPlay
           loop
           muted
           playsInline
-          >
-            <source src={getBasePath("/video1.mp4")} type='video/mp4' />
-            <track kind='captions' srcLang='es' label='Spanish Captions' default />
+        >
+          <source src={getBasePath("/video1.mp4")} type='video/mp4' />
+          <track kind='captions' srcLang='es' label='Spanish Captions' default />
         </video>
         <div className={styles.introContainer}>
           <Image
@@ -27,6 +28,7 @@ export default function Home() {
             priority
           />
           <p className={styles.date}>21 de Agosto del 2025</p>
+          <Counter />
         </div>
       </section>
 
