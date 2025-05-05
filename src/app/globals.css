@@ -1,1 +1,31 @@
 @import "tailwindcss";
+
+:root {
+  --color-primary: #000820cc;
+  --color-secondary: #14A1F0; /*#087ec4*/ /*#14A1F0*/
+  --color-bg: #0b131d;
+  --color-text-header: #F1F2F4;
+  --color-text-body: #C3C7CB;
+  --color-text-footer: #A3ABB2;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  scrollbar-color: #ddd transparent;
+  scrollbar-width: thin;
+}
+
+html,
+body {
+  height: 100vh;
+}
+
+html{
+  scrollbar-gutter: stable;
+}
+
+body {
+  overflow-x: hidden;
+}
