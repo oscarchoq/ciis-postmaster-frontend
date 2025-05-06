@@ -17,7 +17,9 @@ export default function RootLayout({
       <body
         className={`${robotoMono300.className}  antialiased`}
       >
-        {children}
+        <main className="bg-[#000126]">
+          {children}
+        </main>
       </body>
     </html>
   );

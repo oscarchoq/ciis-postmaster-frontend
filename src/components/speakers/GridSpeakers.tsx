@@ -1,6 +1,5 @@
-import { apiConfig, robotoMono400, robotoMono700 } from '@/config';
+import { apiConfig, comfortaa } from '@/config';
 import { SpeakersResponse } from '@/interface';
-import styles from '@/styles/Speaker.module.css';
 import { Speaker } from './Speaker';
 
 const getSpeakers = async (): Promise<SpeakersResponse[]> => {
@@ -12,22 +11,22 @@ const getSpeakers = async (): Promise<SpeakersResponse[]> => {
 export const GridSpeakers = async () => {
 
   const speakers = await getSpeakers();
-  console.log(speakers)
 
   return (
-    <div id="ponentes" className={styles.containerSpeakers}>
-      <div className={styles.headerSpeakers}>
-        <div className={robotoMono700.className}>Ponentes</div>
-        <p className={robotoMono400.className}>Egresados de la Escuela Profesional de Ingeniería en Informática y Sistemas</p>
+    <section className='flex  flex-col min-h-screen items-center justify-center text-white py-20 px-4'>
+      <div className={`${comfortaa.className} text-center mb-12`}>
+        <h2 className='text-4xl font-bold uppercase'>Ponentes</h2>
+        <p className='text-lg'>Egresados de la Escuela Profesional de Ingeniería en Informática y Sistemas</p>
       </div>
 
-      <div className={styles.gridSpeakers}>
+      <div className='grid grid-cols-1 gap-x-7 gap-y-5 md:grid-cols-2 lg:grid-cols-3'>
         {
-        speakers.map( speaker => (
-          <Speaker key={speaker.id} speaker={speaker} />
-        ) )
+          speakers.map(speaker => (
+            <Speaker key={speaker.id} speaker={speaker} />
+          ))
         }
       </div>
-    </div>
+
+    </section>
   )
 }

@@ -5,7 +5,7 @@ import { Counter } from './counter/Counter'
 export const HeroSection = () => {
   return (
     <section className='relative flex flex-col justify-center items-center p-24 min-h-screen overflow-hidden text-white text-center bg-zinc-700/100'>
-      <div className='z-10 relative flex flex-col items-center gap-7'>
+      <div className='z-10 relative flex flex-col items-center gap-5'>
         {/* Logo */}
         <Image
           src={getBasePath("/logo-postmaster.png")}
