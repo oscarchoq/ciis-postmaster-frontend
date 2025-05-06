@@ -11,5 +11,7 @@ export const apiConfig = {
   basePath: '/postmaster',
   endPoints: {
     // Aqui se definen los endpoints
+    speakers: 'https://ciistacna.com/reports/14/speakers.json',
+    schedule: 'https://ciistacna.com/reports/14/cronograma.json',
   }
 }
