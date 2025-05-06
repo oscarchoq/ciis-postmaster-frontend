@@ -37,7 +37,7 @@ export const Speaker = ({ speaker }: Props) => {
           {/* descripcion */}
           <div className='group min-h-28 group-hover:min-h-0'>
             <p
-              className={`text-xs opacity-0 transition-opacity duration-300 group-hover:opacity-100`}
+              className={`text-base opacity-0 transition-opacity duration-300 group-hover:opacity-100`}
             >
               {speaker.description}
             </p>
