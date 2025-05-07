@@ -1,4 +1,4 @@
-import { Roboto_Mono, Comfortaa, DM_Serif_Display, JetBrains_Mono } from 'next/font/google'
+import { Roboto_Mono, Comfortaa, DM_Serif_Display, JetBrains_Mono, Montserrat_Alternates } from 'next/font/google'
 
 export const robotoMono100 = Roboto_Mono({ subsets: ['latin'], weight: '100' })
 export const robotoMono200 = Roboto_Mono({ subsets: ['latin'], weight: '200' })
@@ -28,4 +28,11 @@ export const jetBrainsMono = JetBrains_Mono({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800'],
   variable: '--font-jetbrains-mono',
   display: 'swap',
+})
+
+export const titleFont = Montserrat_Alternates({
+  subsets: ['latin'],
+  weight: ['500', '700', '800'],
+  display: 'swap',
+  variable: '--font-title',
 })

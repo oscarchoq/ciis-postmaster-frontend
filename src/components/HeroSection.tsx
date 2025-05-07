@@ -4,7 +4,7 @@ import { Counter } from './counter/Counter'
 
 export const HeroSection = () => {
   return (
-    <section className='relative flex flex-col justify-center items-center p-24 min-h-screen overflow-hidden text-white text-center bg-zinc-700/50'>
+    <section className='relative flex flex-col justify-center items-center px-6 min-h-screen overflow-hidden text-white text-center bg-zinc-700/50 w-full'>
 
       {/* Background */}
       <video
@@ -19,20 +19,23 @@ export const HeroSection = () => {
       >
         <source src="https://res.cloudinary.com/dnz4gqdqw/video/upload/f_auto:video,q_auto/ruyfi4l9duu8uxj7ukaf" />
       </video>
-      <div className='z-10 relative flex flex-col items-center gap-5'>
 
-        {/* Logo */}
+      <div className='z-10 relative flex flex-col items-center gap-5 animate-fade-in-up'>
+
+        {/* Logo - relacion 2.75:1*/}
         <Image
           src={getBasePath("/logo-postmaster.png")}
           alt='Postmaster Logo'
           width={500}
-          height={300}
+          height={182}
           className="w-auto h-auto"
           priority
         />
-        <p className='text-2xl font-semibold tracking-widest'>22 de Agosto del 2025</p>
+        <p className='text-xl sm:text-2xl font-bold tracking-widest font-title'>22 de Agosto del 2025</p>
+
         {/* Contador */}
         <Counter />
+        
       </div>
 
       {/* Fix para reanudar el video al volver del background (especialmente en movil) */}

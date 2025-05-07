@@ -1,4 +1,4 @@
-import { apiConfig, comfortaa } from '@/config';
+import { apiConfig } from '@/config';
 import { ScheduleResponse } from '@/interface'
 import { FaCalendarDays, FaSquareFacebook } from 'react-icons/fa6';
 import { ScheduleList } from './ScheduleList';
@@ -16,9 +16,20 @@ export const Schedule = async () => {
   return (
     <section className={`text-white min-h-screen py-12`}>
       {/* Titulo */}
-      <div className={`${comfortaa.className} text-center mb-12`}>
-        <h2 className='text-4xl font-bold uppercase'>Cronograma</h2>
-        <p className='text-lg'>22 de Agosto de 2024 • Auditorio Central - UNJBG</p>
+      <div className={`text-center mb-12`}>
+        <h2 className='font-title text-4xl font-extrabold uppercase pb-2'>Cronograma</h2>
+
+        {/* Vista movil */}
+        <p className="text-lg sm:hidden leading-tight text-zinc-300">
+          <span className="block">22 de Agosto de 2024</span>
+          <span className="block">Auditorio Central - UNJBG</span>
+        </p>
+
+        {/* Vista desktop */}
+        <p className="hidden sm:block text-xl leading-tight text-zinc-300">
+          22 de Agosto de 2024 • Auditorio Central - UNJBG
+        </p>
+
       </div>
       {/* Botones */}
       <div className='flex justify-center items-center gap-4 mb-12 flex-col md:flex-row'>
