@@ -1,5 +1,3 @@
-import { jetBrainsMono } from "@/config";
-
 interface Props {
   time: string;
   descripcion: string;
@@ -7,7 +5,7 @@ interface Props {
 
 export const CardCounter = ({time, descripcion}: Props) => {
   return (
-    <div className={`${jetBrainsMono.variable} flex flex-col`}>
+    <div className={`flex flex-col`}>
       <div className="font-jetbrains-mono rounded-t-lg font-extrabold tracking-wider text-xl sm:text-2xl">
         {time}
       </div>

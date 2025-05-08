@@ -12,10 +12,11 @@ export const Speaker = ({ speaker }: Props) => {
     <>
       <div className="group relative cursor-pointer items-center justify-center overflow-hidden transition-shadow hover:shadow-xl hover:shadow-black/30">
 
-        <div className="h-96 w-72">
+        <div className="relative h-96 w-72">
           <Image
             src={apiConfig.domain + speaker.avatar}
             fill
+            sizes="(min-width: 1024px) 18rem, 100vw"
             alt='Speaker Image'
             className='w-full h-full object-cover transition-transform duration-500 group-hover:rotate-3 group-hover:scale-125'
           />
