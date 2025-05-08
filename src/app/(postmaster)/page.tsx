@@ -1,4 +1,4 @@
-import { GridSpeakers, HeroSection, Schedule } from '@/components';
+import { Footer, GridSpeakers, HeroSection, Schedule } from '@/components';
 
 export default async function Home() {
 
@@ -7,6 +7,7 @@ export default async function Home() {
       <HeroSection />
       <GridSpeakers />
       <Schedule />
+      <Footer />
     </>
   );
 }
