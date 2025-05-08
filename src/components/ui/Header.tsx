@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getBasePath } from '@/lib';
 import Image from 'next/image';
 import styles from '../../styles/Header.module.css';
@@ -8,15 +8,29 @@ import Link from 'next/link';
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showHeader, setShowHeader] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-
-  // Función para cerrar el menú cuando se hace clic en un enlace
   const closeMenu = () => setIsMenuOpen(false);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        setShowHeader(false); // scroll hacia abajo
+      } else {
+        setShowHeader(true); // scroll hacia arriba
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
   return (
-    <header className={styles.header}>
-      {/* Sección izquierda: Logo */}
+    <header className={`${styles.header} ${!showHeader ? styles.hidden : ''}`}>
       <div className={styles['header-left']}>
         <Link href="https://ciistacna.com/" passHref target="_blank" rel="noopener noreferrer">
           <div className={styles.logo}>
@@ -31,24 +45,21 @@ export const Header = () => {
         </Link>
       </div>
 
-      {/* Botón hamburguesa solo visible en móviles */}
       <div className={styles['menu-toggle']} onClick={toggleMenu}>
         ☰
       </div>
 
-      {/* Navegación central (incluye INSCRIBETE en móviles) */}
-      <nav className={`${styles.nav} ${isMenuOpen ? styles.active : ''}`}>
+      <nav className={`${styles.nav} ${isMenuOpen ? styles.active : ''} ${!showHeader ? styles.hidden : ''}`}>
+
         <Link href="#inicio" className={styles.link} onClick={closeMenu}>INICIO</Link>
         <Link href="#ponentes" className={styles.link} onClick={closeMenu}>PONENTES</Link>
         <Link href="#horario" className={styles.link} onClick={closeMenu}>HORARIO</Link>
 
-        {/* INSCRIBETE también visible en menú móvil */}
         <div className={styles['mobile-only']}>
           <Link href="#INSCRIBIRTE" className={styles.link} onClick={closeMenu}>INSCRIBETE</Link>
         </div>
       </nav>
 
-      {/* Acción INSCRIBETE solo visible en pantallas grandes */}
       <div className={styles['header-right']}>
         <Link href="#INSCRIBIRTE" className={styles.link}>INSCRIBETE</Link>
       </div>

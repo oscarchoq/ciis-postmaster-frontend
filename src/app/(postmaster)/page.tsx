@@ -1,5 +1,5 @@
 
-import { Header, Footer, Counter, GridSpeakers, HeroSection, Schedule} from '@/components';
+import { Header, Footer, GridSpeakers, HeroSection, Schedule} from '@/components';
 
 export default function Home() {
 

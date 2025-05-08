@@ -9,7 +9,15 @@
   top: 0;
   background-color: trasnparent;
   z-index: 1000;
+  transition: transform 0.3s ease-in-out;
 }
+.hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
 
 /* Contenedor del logo y la barra de navegación */
 .header-left {
@@ -135,7 +143,7 @@
     margin-top: 1rem;
   }
 
-  /* Eliminar efectos de hover y transform en las opciones del menú móvil */
+  /* Eliminar efectos de hover y transform en las opciones del menú móvil
   .nav .link {
     transition: none;
     transform: none; 
@@ -148,6 +156,6 @@
   .nav .link:hover {
     color: white; 
     transform: none;
-  }
+  } */
 }
 

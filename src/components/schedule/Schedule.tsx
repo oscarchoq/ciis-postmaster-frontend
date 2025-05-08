@@ -1,6 +1,7 @@
 import { apiConfig } from '@/config';
 import { ScheduleResponse } from '@/interface'
 import { FaCalendarDays, FaSquareFacebook } from 'react-icons/fa6';
+
 import { ScheduleList } from './ScheduleList';
 
 const getSchedule = async (): Promise<ScheduleResponse[]> => {
