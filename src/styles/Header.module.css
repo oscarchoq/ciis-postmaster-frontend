@@ -1,21 +1,30 @@
 /* Contenedor principal del header */
 .header {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
   position: fixed;
   width: 100%;
   top: 0;
-  background-color: trasnparent;
+  background-color: transparent;
   z-index: 1000;
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out; /* Transición más suave */
 }
+
+/* Cuando el header está oculto */
 .hidden {
   transform: translateY(-100%);
   opacity: 0;
   pointer-events: none;
-  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+/* Cuando el header aparece (transición inversa) */
+.visible {
+  transform: translateY(0);
+  opacity: 1; 
+  pointer-events: auto;
 }
 
 
@@ -119,20 +128,28 @@
   .nav {
     position: absolute;
     top: 100%;
-    right: 1rem; /* pegado al botón */
-    background-color: rgba(0, 0, 0, 0.95);
+    right: 1rem;
+    background-color: rgba(0, 0, 0, 0.602);
     flex-direction: column;
     align-items: flex-start;
     padding: 1rem;
     border-radius: 10px;
-    display: none;
+    visibility: hidden; /* Inicia oculto */
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease, visibility 0s 0.5s; /* La visibilidad cambia después de la animación */
     z-index: 999;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
   }
-
+  
+  /* Cuando el menú está activo */
   .nav.active {
-    display: flex;
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease;
   }
+  
 
   .header-right {
     display: none; /* Oculta el INSCRIBETE del header en móviles */
