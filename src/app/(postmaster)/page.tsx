@@ -18,14 +18,13 @@ export default function Home() {
 
       {/* Aquí podrías agregar más secciones como HORARIO, INSCRIBIRTE, etc. */}
       <section id="horario">
-        
+        <Schedule />
       </section>
 
       <section id="inscribete">
         {/* Contenido de la sección INSCRIBIRTE */}
       </section>  
       
-      <Schedule />
       <Footer />
     </>
   );
