@@ -4,7 +4,10 @@ import { Counter } from './counter/Counter'
 
 export const HeroSection = () => {
   return (
-    <section className='relative flex flex-col justify-center items-center px-6 min-h-screen overflow-hidden text-white text-center bg-zinc-700/50 w-full'>
+    <section
+      id='inicio'
+      className='relative flex flex-col justify-center items-center px-6 min-h-screen overflow-hidden text-white text-center bg-zinc-700/50 w-full'
+    >
 
       {/* Background */}
       <video
@@ -35,7 +38,7 @@ export const HeroSection = () => {
 
         {/* Contador */}
         <Counter />
-        
+
       </div>
 
       {/* Fix para reanudar el video al volver del background (especialmente en movil) */}
@@ -50,7 +53,7 @@ export const HeroSection = () => {
             });
           `,
         }}
-      /> 
+      />
 
     </section>
   )

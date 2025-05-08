@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { jetBrainsMono, titleFont } from "@/config";
 import "./globals.css";
+import { Footer, Header } from "@/components";
 
 export const metadata: Metadata = {
   title: "XXII POSTMASTER",
@@ -15,11 +16,13 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`${titleFont.variable} ${jetBrainsMono.variable}  antialiased`}
+        className={`${titleFont.variable} ${jetBrainsMono.variable} bg-[#000126] antialiased`}
       >
-        <main className="bg-[#000126]">
+        <Header />
+        <main>
           {children}
         </main>
+        <Footer />
       </body>
     </html>
   );

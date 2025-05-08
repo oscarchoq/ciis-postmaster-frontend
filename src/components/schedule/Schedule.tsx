@@ -15,7 +15,10 @@ export const Schedule = async () => {
   const schedule = await getSchedule();
 
   return (
-    <section className={`text-white min-h-screen py-12 animate-fade-in-up`}>
+    <section
+      id='horario'
+      className={`text-white min-h-screen py-12 animate-fade-in-up`}
+    >
       {/* Titulo */}
       <div className={`text-center mb-12`}>
         <h2 className='font-title text-4xl font-extrabold uppercase pb-2'>Cronograma</h2>

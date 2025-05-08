@@ -14,7 +14,10 @@ export const GridSpeakers = async () => {
 
   return (
 
-    <section className='flex flex-col min-h-screen items-center justify-center text-white py-20 px-4 bg-gradient-to-b from-black/40 via-transparent to-transparent'>
+    <section
+      id='ponentes'
+      className='flex flex-col min-h-screen items-center justify-center text-white py-20 px-4 bg-gradient-to-b from-black/40 via-transparent to-transparent'
+    >
 
       <div className={`text-center mb-12 animate-fade-in-up`}>
         <h2 className='font-title text-4xl font-extrabold uppercase pb-2'>Ponentes</h2>
