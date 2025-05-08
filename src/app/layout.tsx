@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { robotoMono300 } from "@/config";
+import { jetBrainsMono, titleFont } from "@/config";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "XXII-POSTMASTER",
+  title: "XXII POSTMASTER",
   description: "POSTMASTER EVENT",
 };
 
@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`${robotoMono300.className}  antialiased`}
+        className={`${titleFont.variable} ${jetBrainsMono.variable}  antialiased`}
       >
         <main className="bg-[#000126]">
           {children}
