@@ -1,5 +1,5 @@
 
-import { Counter, GridSpeakers, HeroSection } from '@/components';
+import { Header, Counter, GridSpeakers, HeroSection } from '@/components';
 import { getBasePath } from '@/lib';
 import styles from '@/styles/Home.module.css'
 import Image from 'next/image';
@@ -8,8 +8,31 @@ export default async function Home() {
 
   return (
     <>
-      <HeroSection />
-      <GridSpeakers />
+      <Header />
+
+      <main>
+        
+
+        {/* Sección de Ponentes */}
+        <section id="inicio">
+          <HeroSection />
+        </section>
+
+        {/* Sección de Ponentes */}
+        <section id="ponentes">
+          <GridSpeakers />
+        </section>
+
+        {/* Aquí podrías agregar más secciones como HORARIO, INSCRIBIRTE, etc. */}
+        <section id="horario">
+          
+        </section>
+
+        <section id="inscribete">
+          {/* Contenido de la sección INSCRIBIRTE */}
+        </section>
+      </main>
+      
       {/* <section id='home' className={styles.intro}>
         <video
           className={styles.videofondo}
