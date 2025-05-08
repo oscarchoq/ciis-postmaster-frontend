@@ -14,7 +14,7 @@ export const Schedule = async () => {
   const schedule = await getSchedule();
 
   return (
-    <section className={`text-white min-h-screen py-12`}>
+    <section className={`text-white min-h-screen py-12 animate-fade-in-up`}>
       {/* Titulo */}
       <div className={`text-center mb-12`}>
         <h2 className='font-title text-4xl font-extrabold uppercase pb-2'>Cronograma</h2>
@@ -61,9 +61,9 @@ export const Schedule = async () => {
       </div>
 
       {/* Cronograma */}
-      <div className='flex items-center justify-center px-2 lg:px-0'>
+      <div className='flex items-center justify-center px-4'>
 
-        <div className='max-w-4xl flex flex-col justify-center w-full gap-12'>
+        <div className='max-w-3xl flex flex-col justify-center w-full gap-12'>
           {schedule[0] && (
             <>
               <ScheduleList shift={"Turno Mañana"} event={schedule[0].early} />

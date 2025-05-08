@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { comfortaa, titleFont } from "@/config";
+import { comfortaa, jetBrainsMono, titleFont } from "@/config";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`${comfortaa.variable} ${titleFont.variable}  antialiased`}
+        className={`${comfortaa.variable} ${titleFont.variable} ${jetBrainsMono.variable}  antialiased`}
       >
         <main className="bg-[#000126]">
           {children}

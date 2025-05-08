@@ -1,5 +1,5 @@
 import { Event } from "@/interface";
-import { ItemSchedule } from "./itemSchedule/ItemSchedule";
+import { ScheduleItem } from "./ScheduleItem";
 
 interface Props {
   shift: string;
@@ -11,8 +11,8 @@ export const ScheduleList = ({ shift, event }: Props) => {
       <h2 className={`text-gray-400 backdrop-opacity-5 text-xl text-center font-extrabold`}>{shift}</h2>
       <div className={`flex flex-col gap-4`}>
         {
-          event.map((schedule, index) => (
-            <ItemSchedule key={index} {...schedule} />
+          event.map((schedule) => (
+              <ScheduleItem key={schedule.id} {...schedule} />
           ))
         }
       </div>
