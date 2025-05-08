@@ -1,15 +1,32 @@
 
-import { Counter, GridSpeakers, HeroSection } from '@/components';
-import { getBasePath } from '@/lib';
-import styles from '@/styles/Home.module.css'
-import Image from 'next/image';
+import { Header, Footer, Counter, GridSpeakers, HeroSection, Schedule} from '@/components';
 
 export default function Home() {
 
   return (
     <>
-      <HeroSection />
-      <GridSpeakers />
+      <Header />
+      {/* Sección de Ponentes */}
+      <section id="inicio">
+        <HeroSection />
+      </section>
+
+      {/* Sección de Ponentes */}
+      <section id="ponentes">
+        <GridSpeakers />
+      </section>
+
+      {/* Aquí podrías agregar más secciones como HORARIO, INSCRIBIRTE, etc. */}
+      <section id="horario">
+        
+      </section>
+
+      <section id="inscribete">
+        {/* Contenido de la sección INSCRIBIRTE */}
+      </section>  
+      
+      <Schedule />
+      <Footer />
     </>
   );
 }
