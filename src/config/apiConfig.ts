@@ -7,9 +7,11 @@
 //   !DOCUMENTACION: https://nextjs.org/docs/app/api-reference/config/next-config-js/basePath
 // - Los endpoints que nuestra aplicación consumirá para interactuar con la API
 export const apiConfig = {
-  domain: 'http://localhost:3000',
+  domain: 'https://ciistacna.com/',
   basePath: '/postmaster',
   endPoints: {
     // Aqui se definen los endpoints
+    speakers: 'https://ciistacna.com/reports/14/speakers.json',
+    schedule: 'https://ciistacna.com/reports/14/cronograma.json',
   }
 }

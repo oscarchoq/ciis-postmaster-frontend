@@ -1,5 +1,13 @@
+
+import { GridSpeakers, HeroSection, Schedule} from '@/components';
+
 export default function Home() {
+
   return (
-    <h1>Web Postmaster</h1>
+    <>
+        <HeroSection />
+        <GridSpeakers />
+        <Schedule />
+    </>
   );
 }
