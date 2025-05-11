@@ -1,6 +1,5 @@
-import type { Metadata } from "next";
-import { jetBrainsMono, titleFont } from "@/config";
-import "./globals.css";
+import { Metadata } from "next";
+import { Footer, Header } from "@/components";
 
 export const metadata: Metadata = {
   title: {
@@ -16,12 +15,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
-      <body
-        className={`${titleFont.variable} ${jetBrainsMono.variable} bg-[#000126] antialiased`}
-      >
+    <>
+      <Header />
+      <main>
         {children}
-      </body>
-    </html>
+      </main>
+      <Footer />
+    </>
   );
 }
