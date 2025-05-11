@@ -3,10 +3,7 @@ import { jetBrainsMono, titleFont } from "@/config";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: {
-    template: '%s - POSTMASTER',
-    default: 'XII POSTMASTER',
-  },
+  title: "XII POSTMASTER",
   description: "Encuentro de egresados de la Escuela Profesional de Ingeniería en Informática y Sistemas",
 };
 
