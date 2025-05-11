@@ -1,5 +1,6 @@
 import { apiConfig } from "@/config";
 import { SpeakersResponse } from "@/interface";
+import { getValidUrl } from "@/lib";
 import Image from "next/image";
 import { FaLinkedin } from "react-icons/fa6";
 
@@ -47,7 +48,8 @@ export const Speaker = ({ speaker }: Props) => {
           {/* Perfil LinkedIn */}
           <div className="pointer-events-none group-hover:pointer-events-auto group/button">
             <a
-              href={speaker.socialNetwork}
+              href={getValidUrl(speaker.socialNetwork)}
+              rel="noopener noreferrer"
               target="_blank"
               className="text-xs rounded-full py-2 px-6 opacity-0 group-hover:opacity-100 transition-all duration-500
                group-hover:pointer-events-auto pointer-events-none

@@ -25,13 +25,14 @@ export const Schedule = async () => {
 
         {/* Vista movil */}
         <p className="text-lg sm:hidden leading-tight text-zinc-300">
-          <span className="block">22 de Agosto de 2024</span>
-          <span className="block">Auditorio Central - UNJBG</span>
+          <span className="block">22 de Agosto de 2025</span>
+          {/* <span className="block">Auditorio Central - UNJBG</span> */}
         </p>
 
         {/* Vista desktop */}
         <p className="hidden sm:block text-xl leading-tight text-zinc-300">
-          22 de Agosto de 2024 • Auditorio Central - UNJBG
+          22 de Agosto de 2025 
+          {/* • Auditorio Central - UNJBG */}
         </p>
 
       </div>
@@ -51,7 +52,7 @@ export const Schedule = async () => {
         </a>
 
         <a
-          href="#_"
+          href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=XXII+POSTMASTER&dates=20250822/20250823&details=Encuentro+de+egresados+de+la+Escuela+Profesional+de+Ingenier%C3%ADa+en+Inform%C3%A1tica+y+Sistemas&location=Universidad+Nacional+Jorge+Basadre+Grohmann"
           target='_blank'
           className="px-5 py-2.5 relative rounded group overflow-hidden font-medium bg-purple-50 text-cyan-600 inline-block">
 
