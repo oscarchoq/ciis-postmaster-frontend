@@ -3,7 +3,7 @@ import { SpeakersResponse } from '@/interface';
 import { Speaker } from './Speaker';
 
 const getSpeakers = async (): Promise<SpeakersResponse[]> => {
-  const data = fetch(`${apiConfig.domain}/reports/14/speakers.json`)
+  const data = fetch(`${apiConfig.endPoints.speakers}`)
     .then(res => res.json())
   return data;
 }
