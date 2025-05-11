@@ -20,8 +20,10 @@ export const Header = () => {
 
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setShowHeader(false);
-      }
-      else if (currentScrollY < lastScrollY && currentScrollY < 100) {
+        if (isMenuOpen) {
+          setIsMenuOpen(false);
+        }
+      } else if (currentScrollY < lastScrollY && currentScrollY < 100) {
         setShowHeader(true);
       }
 
@@ -31,12 +33,11 @@ export const Header = () => {
     window.addEventListener('scroll', handleScroll);
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
-  // max-w-5xl mx-auto w-full flex items-center justify-between
+  }, [lastScrollY, isMenuOpen]);
+
   return (
     <header className={`${styles.header} ${showHeader ? styles.visible : styles.hidden}`}>
       <div className="max-w-5xl mx-auto w-full flex items-center justify-between">
-
         <div className={styles['header-left']}>
           <Link href="https://ciistacna.com/" passHref target="_blank" rel="noopener noreferrer">
             <div className={styles.logo}>
@@ -60,20 +61,34 @@ export const Header = () => {
         </div>
 
         <nav className={`${styles.nav} ${isMenuOpen ? styles.active : ''} font-title text-4xl font-extrabold pb-2`}>
-
           <Link href="#inicio" className={styles.link} onClick={closeMenu}>INICIO</Link>
           <Link href="#ponentes" className={styles.link} onClick={closeMenu}>PONENTES</Link>
           <Link href="#horario" className={styles.link} onClick={closeMenu}>HORARIO</Link>
-
-          <div className={styles['mobile-only']}>
+          
+           {/*<div className={styles['mobile-only']}>
             <Link href="#" className={styles.link} onClick={closeMenu}>INSCRIBETE</Link>
-          </div>
+          </div>*/} 
         </nav>
 
-        <div className={styles['header-right']}>
-          <Link href="#" className={`${styles.link} font-title text-4xl font-extrabold pb-2`}>INSCRIBETE</Link>
+        {/* <div className={styles['header-right']}>
+          <Link
+            href="#INSCRIBIRTE"
+            className={`${styles.link} font-title text-4xl font-extrabold pb-2`}
+          >
+            INSCRIBETE
+          </Link>
+        </div> */}
 
+        
+        <div className={styles['header-right']}>
+          <div
+            className={`${styles.linkNoactive} font-title text-4xl font-extrabold pb-2`}
+          >
+            PROXIMAMENTE
+          </div>
         </div>
+
+
       </div>
     </header>
   );
