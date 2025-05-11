@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { getBasePath } from '@/lib';
 import Image from 'next/image';
 import styles from './Header.module.css';
 import Link from 'next/link';
@@ -42,7 +41,7 @@ export const Header = () => {
           <Link href="https://ciistacna.com/" passHref target="_blank" rel="noopener noreferrer">
             <div className={styles.logo}>
               <Image
-                src={getBasePath('/logo_ciis.png')}
+                src={'/logo_ciis.png'}
                 alt="CIIS Logo"
                 width={120}
                 height={33}

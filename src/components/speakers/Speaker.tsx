@@ -14,7 +14,7 @@ export const Speaker = ({ speaker }: Props) => {
 
         <div className="relative h-96 w-72">
           <Image
-            src={apiConfig.domain + speaker.avatar}
+            src={apiConfig.resourceDomain + speaker.avatar}
             fill
             sizes="(min-width: 1024px) 18rem, 100vw"
             alt='Speaker Image'

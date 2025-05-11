@@ -1,3 +1,4 @@
+// !NO SE USA PERO SE DEJA POR SI ACASO
 // !Se encarga de construir rutas internas que respeten la subruta definida en `basePath` 
 // !DOCUMENTACION: https://nextjs.org/docs/app/api-reference/config/next-config-js/basePath
 // Es indispensable cuando la aplicación no está montada en la raíz del dominio (ej: midominio.com/postmaster),

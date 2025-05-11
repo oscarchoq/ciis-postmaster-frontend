@@ -1,4 +1,3 @@
-import { getBasePath } from '@/lib'
 import Image from 'next/image'
 import { Counter } from './counter/Counter'
 
@@ -27,7 +26,7 @@ export const HeroSection = () => {
 
         {/* Logo - relacion 2.75:1*/}
         <Image
-          src={getBasePath("/logo-postmaster.png")}
+          src={"/logo-postmaster.png"}
           alt='Postmaster Logo'
           width={500}
           height={182}
