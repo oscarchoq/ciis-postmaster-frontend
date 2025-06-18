@@ -1,3 +1,5 @@
+import { Payments } from "@/components"
+// import PaymentInfo from "@/components/paymets/PaymentInfo"
 import { EventInscription } from "@/interface"
 import { BiCalendar, BiMapPin } from "react-icons/bi"
 import { TiTicket } from "react-icons/ti"
@@ -7,12 +9,12 @@ export const Details = (event: EventInscription) => {
     <div className="bg-white/5 rounded-lg border border-[#1e1e2f] p-6 lg:p-8 h-fit lg:w-2/5">
 
       {/* Header */}
-      <div className="hidden lg:block mb-8">
+      {/* <div className="hidden lg:block mb-8">
         <div>
           <h1 className="text-2xl font-bold text-white font-title">Registro de Evento</h1>
           <p className="text-zinc-300">completa la información para asegurar tu lugar</p>
         </div>
-      </div>
+      </div> */}
 
       {/* Event Details */}
       <div className="space-y-4">
@@ -58,8 +60,11 @@ export const Details = (event: EventInscription) => {
         </div>
 
         {/* Metodos de pago */}
-        <div className="border border-[#1e1e2f] rounded-lg p-4">
-          <h3 className="text-sm font-semibold text-gray-100 mb-4">Métodos de pago</h3>
+        <div className="">
+          <h3 className="text-sm font-semibold text-gray-100 mb-4">
+            Métodos de pago
+          </h3>
+          <Payments />
         </div>
 
       </div>
