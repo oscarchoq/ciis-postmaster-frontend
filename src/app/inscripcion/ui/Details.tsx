@@ -8,14 +8,6 @@ export const Details = (event: EventInscription) => {
   return (
     <div className="bg-white/5 rounded-lg border border-[#1e1e2f] p-6 lg:p-8 h-fit lg:w-2/5">
 
-      {/* Header */}
-      {/* <div className="hidden lg:block mb-8">
-        <div>
-          <h1 className="text-2xl font-bold text-white font-title">Registro de Evento</h1>
-          <p className="text-zinc-300">completa la información para asegurar tu lugar</p>
-        </div>
-      </div> */}
-
       {/* Event Details */}
       <div className="space-y-4">
 
