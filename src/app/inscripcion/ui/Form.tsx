@@ -1,15 +1,15 @@
 "use client";
+import { useEffect, useState } from "react";
+import { CheckCircle, Search, Upload, User } from "lucide-react"
+import { useForm } from "react-hook-form";
+import { cn } from '@/lib/utils';
+import { createInscription, getDataByDNI } from "@/actions";
+import { InscriptionForm } from "@/interface";
 import { Button } from "@/components/ui/button"
 import { FileUpload } from "@/components/ui/file-upload"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { CheckCircle, Search, Upload, User } from "lucide-react"
-import { cn } from '../../../lib/utils';
-import { useEffect, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useForm } from "react-hook-form";
-import { InscriptionForm } from "@/interface";
-import { getDataByDNI } from "@/actions";
 
 type RegistrationState =
   | "idle"
@@ -20,7 +20,7 @@ type RegistrationState =
 
 export const Form = () => {
 
-  const [buttonState, setButtonState] = useState<RegistrationState>("success");
+  const [buttonState, setButtonState] = useState<RegistrationState>("idle");
   const [documentType, setDocumentType] = useState<string>("dni");
 
 
@@ -40,10 +40,18 @@ export const Form = () => {
     setButtonState("processing");
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
       console.log("Form submitted:", data);
-      setButtonState("success-button");
+      const savedData = await createInscription(data);
       
+      // No se guardó correctamente
+      if (!savedData?.ok) {
+        console.error("Error al guardar los datos");
+        setButtonState("idle");
+        return;
+      }
+      
+      setButtonState("success-button");
+      // Simulando retraso
       await new Promise((resolve) => setTimeout(resolve, 1500));
       setButtonState("success");
 
@@ -126,7 +134,19 @@ export const Form = () => {
                   <Input
                     className="border border-gray-400"
                     type="number"
-                    {...register("documentNumber", { required: "Este campo es obligatorio" })}
+                    {...register("documentNumber", { required: "Este campo es obligatorio",
+                      validate: {
+                        validLength: (value) => {
+                          if (documentType === "dni" && value.length !== 8) {
+                            return "El DNI debe tener 8 dígitos";
+                          }
+                          if (documentType !== "dni" && value.length !== 9) {
+                            return "El número de documento debe tener 9 dígitos";
+                          }
+                          return true;
+                        }
+                      }
+                     })}
                   />
                   {
                     documentType === "dni" &&
