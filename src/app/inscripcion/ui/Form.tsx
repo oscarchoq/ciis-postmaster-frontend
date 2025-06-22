@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useForm } from "react-hook-form";
 import { InscriptionForm } from "@/interface";
+import { getDataByDNI } from "@/actions";
 
 type RegistrationState =
   | "idle"
@@ -37,14 +38,13 @@ export const Form = () => {
 
   const onSubmit = async (data: InscriptionForm) => {
     setButtonState("processing");
-    
+
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
       console.log("Form submitted:", data);
       setButtonState("success-button");
       
-
-      await new Promise ((resolve) => setTimeout(resolve, 1500));
+      await new Promise((resolve) => setTimeout(resolve, 1500));
       setButtonState("success");
 
     } catch (error) {
@@ -57,10 +57,15 @@ export const Form = () => {
   const searchReniec = async () => {
     if (!documentNumber || documentNumber.length !== 8) return;
 
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      const { nombres, apellidos } = await getDataByDNI(documentNumber);
 
-    setValue("firstName", "Juan", {shouldValidate: true});
-    setValue("lastName", "Perez", {shouldValidate: true});
+      setValue("firstName", nombres, { shouldValidate: true });
+      setValue("lastName", apellidos, { shouldValidate: true });
+
+    } catch (error) {
+      console.log("Error searchReniec", error);
+    }
   }
 
   return (
@@ -210,9 +215,9 @@ export const Form = () => {
             </div>
 
             <FileUpload
-              onFileSelect={(file) => setValue("voucher", file, {shouldValidate: true})}
+              onFileSelect={(file) => setValue("voucher", file, { shouldValidate: true })}
             />
-            <p className="text-sm text-gray-400">Solo se permiten imágenes con un tamaño máximo de 5MB.</p>
+            <p className="text-sm text-gray-400">Solo se permiten imágenes de hasta 5MB.</p>
             {errors.voucher && (
               <p className="text-red-500 text-sm">{errors.voucher.message}</p>
             )}
