@@ -1,6 +1,6 @@
+import { EventInscription } from "@/interface"
 import { Details } from "./ui/Details"
 import { Form } from "./ui/Form"
-import { EventInscription } from '../../interface/Inscription';
 
 const event: EventInscription = {
   id: "1",

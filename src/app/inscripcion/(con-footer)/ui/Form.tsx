@@ -20,7 +20,7 @@ type RegistrationState =
 
 export const Form = () => {
 
-  const [buttonState, setButtonState] = useState<RegistrationState>("idle");
+  const [buttonState, setButtonState] = useState<RegistrationState>("success");
   const [documentType, setDocumentType] = useState<string>("dni");
 
 
@@ -117,8 +117,6 @@ export const Form = () => {
                   <SelectContent className="bg-[#000126] border border-gray-400 text-gray-300">
                     <SelectItem value="dni">DNI</SelectItem>
                     <SelectItem value="carnet-extranjeria">Carnet de Extranjería</SelectItem>
-                    <SelectItem value="pasaporte">Pasaporte</SelectItem>
-                    <SelectItem value="otro">Otro</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
