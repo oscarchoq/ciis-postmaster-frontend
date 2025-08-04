@@ -5,7 +5,11 @@ import { FaCalendarDays, FaSquareFacebook } from 'react-icons/fa6';
 import { ScheduleList } from './ScheduleList';
 
 const getSchedule = async (): Promise<ScheduleResponse[]> => {
-  const data: Promise<ScheduleResponse[]> = fetch(`${apiConfig.endPoints.schedule}`)
+  const revalidateTime = process.env.NODE_ENV === 'production' ? 43200 : 60; // 12 horas en prod, 1 minuto en dev
+  
+  const data: Promise<ScheduleResponse[]> = fetch(`${apiConfig.endPoints.schedule}`, {
+    next: { revalidate: revalidateTime }
+  })
     .then(res => res.json())
   return data;
 }
@@ -26,13 +30,13 @@ export const Schedule = async () => {
         {/* Vista movil */}
         <p className="text-lg sm:hidden leading-tight text-zinc-300">
           <span className="block">22 de Agosto de 2025</span>
-          {/* <span className="block">Auditorio Central - UNJBG</span> */}
+          <span className="block">Auditorio de Civil - UNJBG</span>
         </p>
 
         {/* Vista desktop */}
         <p className="hidden sm:block text-xl leading-tight text-zinc-300">
           22 de Agosto de 2025 
-          {/* • Auditorio Central - UNJBG */}
+          • Auditorio de Civil - UNJBG
         </p>
 
       </div>

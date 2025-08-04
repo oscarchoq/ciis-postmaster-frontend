@@ -3,7 +3,11 @@ import { SpeakersResponse } from '@/interface';
 import { Speaker } from './Speaker';
 
 const getSpeakers = async (): Promise<SpeakersResponse[]> => {
-  const data = fetch(`${apiConfig.endPoints.speakers}`)
+  const revalidateTime = process.env.NODE_ENV === 'production' ? 43200 : 60; // 12 horas en prod, 1 minuto en dev
+  
+  const data = fetch(`${apiConfig.endPoints.speakers}`, {
+    next: { revalidate: revalidateTime }
+  })
     .then(res => res.json())
   return data;
 }
