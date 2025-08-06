@@ -2,6 +2,7 @@
 import Image from "next/image"
 import { useState } from "react"
 import { IoMdArrowRoundBack } from "react-icons/io"
+import Formulario from "./ui/Formulario"
 
 const InscripcionPage = () => {
   const [showBackText, setShowBackText] = useState(false)
@@ -135,7 +136,7 @@ const InscripcionPage = () => {
 
         {/* Lado derecho */}
         <div className="bg-zinc-50 py-12 px-6 sm:px-8 lg:px-5 flex items-start justify-center lg:justify-start">
-          Formulario en proceso ...
+          <Formulario />
         </div>
       </div>
     </main>
