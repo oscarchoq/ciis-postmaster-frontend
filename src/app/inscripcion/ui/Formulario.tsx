@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import React, { useState } from 'react'
 import { Search, Loader2, Upload, ImageIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
+import { getDataByDNI } from '@/actions';
 
 interface FormData {
   tipoDocumento: string
@@ -59,51 +60,30 @@ const Formulario = () => {
     }
   }, [tipoDocumento, numeroDocumento])
 
-  // Función que simula la búsqueda en API externa
-  const buscarPersonaPorDNI = async (dni: string) => {
-    setIsSearching(true)
-    
-    try {
-      // Simulamos una llamada a API con delay
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      
-      // Simulamos respuestas para algunos DNIs específicos
-      const mockResponses: { [key: string]: { nombres: string, apellidos: string } } = {
-        '12345678': { nombres: 'Juan Carlos', apellidos: 'García López' },
-        '87654321': { nombres: 'María Elena', apellidos: 'Rodríguez Silva' },
-        '11223344': { nombres: 'Luis Alberto', apellidos: 'Mendoza Torres' },
-        '99887766': { nombres: 'Ana Patricia', apellidos: 'Vásquez Morales' }
-      }
-      
-      if (mockResponses[dni]) {
-        const persona = mockResponses[dni]
-        setValue('nombres', persona.nombres)
-        setValue('apellidos', persona.apellidos)
-        setIsDataFromAPI(true) // Marcamos que los datos vienen de la API
-        return { success: true, data: persona }
-      } else {
-        // Si no encuentra el DNI
-        throw new Error('DNI no encontrado')
-      }
-    } catch (error) {
-      console.error('Error al buscar DNI:', error)
-      // Limpiar los campos si no se encuentra el DNI
-      setValue('nombres', '')
-      setValue('apellidos', '')
-      setIsDataFromAPI(false)
-      alert('No se encontraron datos para este DNI. Por favor, ingrese los datos manualmente.')
-      return { success: false, error: error }
-    } finally {
-      setIsSearching(false)
-    }
-  }
-
-  const handleBuscarDNI = () => {
+  // Buscar API Reniec
+  const searchReniec = async () => {
     if (!numeroDocumento || numeroDocumento.length !== 8) {
       alert('Por favor, ingrese un DNI válido de 8 dígitos')
       return
     }
-    buscarPersonaPorDNI(numeroDocumento)
+
+    setIsSearching(true)
+
+    try {
+      const { nombres, apellidos } = await getDataByDNI(numeroDocumento)
+      setValue('nombres', nombres)
+      setValue('apellidos', apellidos)
+      setIsDataFromAPI(true)
+
+    } catch (error) {
+      console.error('Error al buscar DNI:', error)
+      alert('No se encontraron datos para este DNI. Por favor, ingrese los datos manualmente.')
+      setValue('nombres', '')
+      setValue('apellidos', '')
+      setIsDataFromAPI(false)
+    } finally {
+      setIsSearching(false)
+    }
   }
 
   const onSubmit = (data: FormData) => {
@@ -191,7 +171,7 @@ const Formulario = () => {
                     type="button"
                     variant="outline"
                     size="icon"
-                    onClick={handleBuscarDNI}
+                    onClick={searchReniec}
                     disabled={isSearching || !numeroDocumento}
                     className="border-zinc-300 hover:bg-zinc-50"
                   >
