@@ -69,23 +69,23 @@ export const Header = () => {
           </div>*/} 
         </nav>
 
-        {/* <div className={styles['header-right']}>
+        <div className={styles['header-right']}>
           <Link
-            href="#INSCRIBIRTE"
+            href="/inscripcion"
             className={`${styles.link} font-title text-4xl font-extrabold pb-2`}
           >
             INSCRIBETE
           </Link>
-        </div> */}
+        </div>
 
         
-        <div className={styles['header-right']}>
+        {/* <div className={styles['header-right']}>
           <div
             className={`${styles.linkNoactive} font-title text-4xl font-extrabold pb-2`}
           >
             PROXIMAMENTE
           </div>
-        </div>
+        </div> */}
 
 
       </div>
