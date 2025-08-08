@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Search, Loader2, Upload, ImageIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { getDataByDNI } from '@/actions';
@@ -19,7 +19,7 @@ interface FormData {
   carrera: string
   password: string
   confirmPassword: string
-  voucher: FileList
+  voucher: File | null
 }
 
 const Formulario = () => {
@@ -27,34 +27,31 @@ const Formulario = () => {
   const [isDataFromAPI, setIsDataFromAPI] = useState(false)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [dragActive, setDragActive] = useState(false)
-  
+
   const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors }
+    register, handleSubmit, watch, setValue, clearErrors,
+    formState: { errors, isValid }
   } = useForm<FormData>({
-    defaultValues: {
-      tipoDocumento: '',
-      numeroDocumento: '',
-      nombres: '',
-      apellidos: '',
-      email: '',
-      celular: '',
-      universidad: '',
-      carrera: '',
-      password: '',
-      confirmPassword: ''
-    }
+    mode: 'onChange'
   })
 
-  // Observar valores específicos
   const tipoDocumento = watch('tipoDocumento')
   const numeroDocumento = watch('numeroDocumento')
 
-  // Resetear estado cuando cambie el tipo de documento o se borre el número
-  React.useEffect(() => {
+  // Verificar si el formulario está completo y válido
+  const isFormValid = isValid && selectedFile !== null && Object.keys(errors).length === 0
+
+  useEffect(() => {
+    register('tipoDocumento', {
+      required: 'Selecciona un documento'
+    })
+  }, [register])
+
+  useEffect(() => {
+    register("voucher", { required: "Voucher requerido" });
+  }, [register]);
+
+  useEffect(() => {
     if (tipoDocumento !== 'dni' || !numeroDocumento) {
       setIsDataFromAPI(false)
     }
@@ -62,8 +59,8 @@ const Formulario = () => {
 
   // Buscar API Reniec
   const searchReniec = async () => {
-    if (!numeroDocumento || numeroDocumento.length !== 8) {
-      alert('Por favor, ingrese un DNI válido de 8 dígitos')
+    if (!numeroDocumento || numeroDocumento.length !== 8 || !/^\d{8}$/.test(numeroDocumento)) {
+      alert('Por favor, ingrese un DNI válido de exactamente 8 dígitos')
       return
     }
 
@@ -71,23 +68,26 @@ const Formulario = () => {
 
     try {
       const { nombres, apellidos } = await getDataByDNI(numeroDocumento)
-      setValue('nombres', nombres)
-      setValue('apellidos', apellidos)
+      setValue('nombres', nombres, { shouldValidate: true })
+      setValue('apellidos', apellidos, { shouldValidate: true })
       setIsDataFromAPI(true)
 
     } catch (error) {
       console.error('Error al buscar DNI:', error)
       alert('No se encontraron datos para este DNI. Por favor, ingrese los datos manualmente.')
-      setValue('nombres', '')
-      setValue('apellidos', '')
+      setValue('nombres', '', { shouldValidate: true })
+      setValue('apellidos', '', { shouldValidate: true })
       setIsDataFromAPI(false)
     } finally {
       setIsSearching(false)
     }
   }
 
+  // Submit Formulario
   const onSubmit = (data: FormData) => {
+
     console.log('Datos del formulario:', data)
+    // console.log('Archivo seleccionado:', selectedFile)
     // Aquí puedes agregar la lógica para enviar los datos
     alert('Formulario enviado exitosamente!')
   }
@@ -97,7 +97,11 @@ const Formulario = () => {
     const file = e.target.files?.[0]
     if (file) {
       setSelectedFile(file)
-      setValue('voucher', e.target.files as FileList)
+      setValue('voucher', file, { shouldValidate: true })
+      clearErrors('voucher')
+    } else {
+      setSelectedFile(null)
+      setValue('voucher', null, { shouldValidate: true })
     }
   }
 
@@ -115,35 +119,41 @@ const Formulario = () => {
     e.preventDefault()
     e.stopPropagation()
     setDragActive(false)
-    
+
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       const file = e.dataTransfer.files[0]
       if (file.type.startsWith('image/')) {
         setSelectedFile(file)
-        const dt = new DataTransfer()
-        dt.items.add(file)
-        setValue('voucher', dt.files)
+        setValue('voucher', file, { shouldValidate: true })
+        clearErrors('voucher')
       } else {
         alert('Por favor, selecciona solo archivos de imagen')
       }
     }
   }
-  
+
   return (
     <div className='max-w-sm w-full mx-auto xl:mr-0 xl:ml-12'>
       <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-        
+
         {/* Datos Personales */}
         <div>
           <h3 className="text-[#000126] text-lg font-semibold mb-4">Datos Personales</h3>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
             {/* Tipo de documento */}
             <div className="space-y-2">
               <Label htmlFor="tipoDocumento" className="text-zinc-700 font-medium">
                 Tipo de documento
               </Label>
-              <Select value={tipoDocumento} onValueChange={(value) => setValue('tipoDocumento', value)}>
-                <SelectTrigger className="w-full">
+              <Select
+                value={tipoDocumento}
+                onValueChange={(value) => {
+                  setValue('tipoDocumento', value, { shouldValidate: true })
+                }}
+              >
+                <SelectTrigger className={`w-full ${errors.tipoDocumento ? 'border-red-500' : ''}`}>
                   <SelectValue placeholder="Seleccionar documento" />
                 </SelectTrigger>
                 <SelectContent>
@@ -151,6 +161,9 @@ const Formulario = () => {
                   <SelectItem value="pasaporte">Pasaporte</SelectItem>
                 </SelectContent>
               </Select>
+              {errors.tipoDocumento && (
+                <p className="text-red-500 text-xs leading-tight">{errors.tipoDocumento.message}</p>
+              )}
             </div>
 
             {/* Número de documento */}
@@ -159,21 +172,38 @@ const Formulario = () => {
                 Número de documento
               </Label>
               <div className="flex gap-2">
-                <Input 
+                <Input
                   id="numeroDocumento"
                   type="text"
-                  placeholder="Ingresa tu número de documento"
-                  className="border-zinc-300 flex-1"
-                  {...register('numeroDocumento')}
+                  placeholder={tipoDocumento === 'dni' ? '12345678' : 'número de documento'}
+                  className={`border-zinc-300 flex-1 ${errors.numeroDocumento ? 'border-red-500' : ''}`}
+                  {...register('numeroDocumento', {
+                    required: 'Número de documento requerido',
+                    validate: (value) => {
+                      if (tipoDocumento === 'dni') {
+                        if (!/^\d{8}$/.test(value)) {
+                          return 'DNI debe tener 8 dígitos'
+                        }
+                      } else if (tipoDocumento === 'pasaporte') {
+                        if (value.length < 6) {
+                          return 'Mín. 6 caracteres'
+                        }
+                        if (value.length > 20) {
+                          return 'Máx. 20 caracteres'
+                        }
+                      }
+                      return true
+                    }
+                  })}
                 />
                 {tipoDocumento === 'dni' && (
                   <Button
                     type="button"
-                    variant="outline"
+                    variant="default"
                     size="icon"
                     onClick={searchReniec}
-                    disabled={isSearching || !numeroDocumento}
-                    className="border-zinc-300 hover:bg-zinc-50"
+                    disabled={isSearching || !numeroDocumento || numeroDocumento.length !== 8 || !/^\d{8}$/.test(numeroDocumento)}
+                    className=" bg-[#000126] text-white"
                   >
                     {isSearching ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
@@ -183,6 +213,9 @@ const Formulario = () => {
                   </Button>
                 )}
               </div>
+              {errors.numeroDocumento && (
+                <p className="text-red-500 text-xs leading-tight">{errors.numeroDocumento.message}</p>
+              )}
             </div>
 
             {/* Nombres */}
@@ -190,14 +223,27 @@ const Formulario = () => {
               <Label htmlFor="nombres" className="text-zinc-700 font-medium">
                 Nombres
               </Label>
-              <Input 
+              <Input
                 id="nombres"
                 type="text"
                 placeholder="Ingresa tus nombres"
-                className={`border-zinc-300 ${isDataFromAPI ? 'bg-zinc-50' : ''}`}
+                className={`border-zinc-300 ${isDataFromAPI ? 'bg-zinc-50' : ''} ${errors.nombres && !isDataFromAPI ? 'border-red-500' : ''}`}
                 disabled={isDataFromAPI}
-                {...register('nombres')}
+                {...register('nombres', {
+                  required: 'Nombres requeridos',
+                  minLength: {
+                    value: 2,
+                    message: 'Mín. 2 caracteres'
+                  },
+                  pattern: {
+                    value: /^[a-zA-ZÀ-ÿ\s]+$/,
+                    message: 'Solo letras y espacios'
+                  }
+                })}
               />
+              {errors.nombres && !isDataFromAPI && (
+                <p className="text-red-500 text-xs leading-tight">{errors.nombres.message}</p>
+              )}
             </div>
 
             {/* Apellidos */}
@@ -205,14 +251,27 @@ const Formulario = () => {
               <Label htmlFor="apellidos" className="text-zinc-700 font-medium">
                 Apellidos
               </Label>
-              <Input 
+              <Input
                 id="apellidos"
                 type="text"
                 placeholder="Ingresa tus apellidos"
-                className={`border-zinc-300 ${isDataFromAPI ? 'bg-zinc-50' : ''}`}
+                className={`border-zinc-300 ${isDataFromAPI ? 'bg-zinc-50' : ''} ${errors.apellidos && !isDataFromAPI ? 'border-red-500' : ''}`}
                 disabled={isDataFromAPI}
-                {...register('apellidos')}
+                {...register('apellidos', {
+                  required: 'Apellidos requeridos',
+                  minLength: {
+                    value: 2,
+                    message: 'Mín. 2 caracteres'
+                  },
+                  pattern: {
+                    value: /^[a-zA-ZÀ-ÿ\s]+$/,
+                    message: 'Solo letras y espacios'
+                  }
+                })}
               />
+              {errors.apellidos && !isDataFromAPI && (
+                <p className="text-red-500 text-xs leading-tight">{errors.apellidos.message}</p>
+              )}
             </div>
 
             {/* Correo electrónico */}
@@ -220,13 +279,22 @@ const Formulario = () => {
               <Label htmlFor="email" className="text-zinc-700 font-medium">
                 Correo electrónico
               </Label>
-              <Input 
+              <Input
                 id="email"
                 type="email"
                 placeholder="ejemplo@correo.com"
-                className="border-zinc-300"
-                {...register('email')}
+                className={`border-zinc-300 ${errors.email ? 'border-red-500' : ''}`}
+                {...register('email', {
+                  required: 'Email requerido',
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: 'Email inválido'
+                  }
+                })}
               />
+              {errors.email && (
+                <p className="text-red-500 text-xs leading-tight">{errors.email.message}</p>
+              )}
             </div>
 
             {/* Celular */}
@@ -234,16 +302,26 @@ const Formulario = () => {
               <Label htmlFor="celular" className="text-zinc-700 font-medium">
                 Celular
               </Label>
-              <Input 
+              <Input
                 id="celular"
                 type="tel"
-                placeholder="987 654 321"
-                className="border-zinc-300"
-                {...register('celular')}
+                placeholder="987654321"
+                className={`border-zinc-300 ${errors.celular ? 'border-red-500' : ''}`}
+                {...register('celular', {
+                  required: 'Celular requerido',
+                  pattern: {
+                    value: /^\d{9}$/,
+                    message: 'Debe tener 9 dígitos'
+                  }
+                })}
               />
+              {errors.celular && (
+                <p className="text-red-500 text-xs leading-tight">{errors.celular.message}</p>
+              )}
             </div>
           </div>
         </div>
+
 
         {/* Información Académica */}
         <div>
@@ -254,13 +332,22 @@ const Formulario = () => {
               <Label htmlFor="universidad" className="text-zinc-700 font-medium">
                 Universidad
               </Label>
-              <Input 
+              <Input
                 id="universidad"
                 type="text"
                 placeholder="Nombre de tu universidad"
-                className="border-zinc-300"
-                {...register('universidad')}
+                className={`border-zinc-300 ${errors.universidad ? 'border-red-500' : ''}`}
+                {...register('universidad', {
+                  required: 'Universidad requerida',
+                  minLength: {
+                    value: 3,
+                    message: 'Mín. 3 caracteres'
+                  }
+                })}
               />
+              {errors.universidad && (
+                <p className="text-red-500 text-xs leading-tight">{errors.universidad.message}</p>
+              )}
             </div>
 
             {/* Carrera */}
@@ -268,13 +355,22 @@ const Formulario = () => {
               <Label htmlFor="carrera" className="text-zinc-700 font-medium">
                 Carrera
               </Label>
-              <Input 
+              <Input
                 id="carrera"
                 type="text"
                 placeholder="Nombre de tu carrera"
-                className="border-zinc-300"
-                {...register('carrera')}
+                className={`border-zinc-300 ${errors.carrera ? 'border-red-500' : ''}`}
+                {...register('carrera', {
+                  required: 'Carrera requerida',
+                  minLength: {
+                    value: 3,
+                    message: 'Mín. 3 caracteres'
+                  }
+                })}
               />
+              {errors.carrera && (
+                <p className="text-red-500 text-xs leading-tight">{errors.carrera.message}</p>
+              )}
             </div>
           </div>
         </div>
@@ -288,13 +384,26 @@ const Formulario = () => {
               <Label htmlFor="password" className="text-zinc-700 font-medium">
                 Contraseña
               </Label>
-              <Input 
+              <Input
                 id="password"
                 type="password"
                 placeholder="Ingresa tu contraseña"
-                className="border-zinc-300"
-                {...register('password')}
+                className={`border-zinc-300 ${errors.password ? 'border-red-500' : ''}`}
+                {...register('password', {
+                  required: 'Contraseña requerida',
+                  minLength: {
+                    value: 6,
+                    message: 'Mín. 6 caracteres'
+                  },
+                  pattern: {
+                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+                    message: 'Requiere: mayúscula, minúscula y número'
+                  }
+                })}
               />
+              {errors.password && (
+                <p className="text-red-500 text-xs leading-tight">{errors.password.message}</p>
+              )}
             </div>
 
             {/* Confirmar contraseña */}
@@ -302,13 +411,19 @@ const Formulario = () => {
               <Label htmlFor="confirmPassword" className="text-zinc-700 font-medium">
                 Confirmar contraseña
               </Label>
-              <Input 
+              <Input
                 id="confirmPassword"
                 type="password"
                 placeholder="Confirma tu contraseña"
-                className="border-zinc-300"
-                {...register('confirmPassword')}
+                className={`border-zinc-300 ${errors.confirmPassword ? 'border-red-500' : ''}`}
+                {...register('confirmPassword', {
+                  required: 'Confirmar contraseña',
+                  validate: (value) => value === watch('password') || 'Las contraseñas no coinciden'
+                })}
               />
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-xs leading-tight">{errors.confirmPassword.message}</p>
+              )}
             </div>
           </div>
         </div>
@@ -317,15 +432,13 @@ const Formulario = () => {
         <div>
           <h3 className="text-[#000126] text-lg font-semibold mb-4">Voucher de Pago</h3>
           <div className="space-y-3">
-            <Label className="text-zinc-700 font-medium">
-              Subir imagen del voucher
-            </Label>
-            
+
             {/* Área de drag and drop personalizada */}
             <div
-              className={`relative border-2 border-dashed rounded-lg p-6 transition-all duration-200 cursor-pointer hover:border-zinc-400 ${
-                dragActive ? 'border-blue-400 bg-blue-50' : 'border-zinc-300 bg-zinc-50'
-              }`}
+              className={`relative border-2 border-dashed rounded-lg p-6 transition-all duration-200 cursor-pointer hover:border-zinc-400 ${dragActive ? 'border-blue-400 bg-blue-50' :
+                  errors.voucher ? 'border-red-500 bg-red-50' :
+                    'border-zinc-300 bg-zinc-50'
+                }`}
               onDragEnter={handleDrag}
               onDragLeave={handleDrag}
               onDragOver={handleDrag}
@@ -336,9 +449,9 @@ const Formulario = () => {
                 type="file"
                 accept="image/*"
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                {...register('voucher', { onChange: handleFileChange })}
+                onChange={handleFileChange}
               />
-              
+
               {selectedFile ? (
                 // Vista cuando hay archivo seleccionado
                 <div className="flex items-center space-x-3">
@@ -367,7 +480,11 @@ const Formulario = () => {
                 </div>
               )}
             </div>
-            
+
+            {errors.voucher && (
+              <p className="text-red-500 text-xs leading-tight">{errors.voucher.message}</p>
+            )}
+
             <p className="text-xs text-zinc-500">
               Sube una imagen clara de tu voucher de pago para verificar tu inscripción
             </p>
@@ -376,9 +493,12 @@ const Formulario = () => {
 
         {/* Botón de inscripción */}
         <div className="pt-4">
-          <Button 
+          <Button
             type="submit"
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 text-base transition-colors duration-200"
+            className={`w-full font-semibold py-3 text-base transition-all duration-300 ${isFormValid
+                ? 'bg-green-600 hover:bg-green-700 text-white'
+                : 'bg-green-500/70 hover:bg-green-600/80 text-white/70'
+              }`}
           >
             Inscribirme al evento
           </Button>
