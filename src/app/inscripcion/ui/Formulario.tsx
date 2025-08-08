@@ -6,21 +6,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useState, useEffect } from 'react'
 import { Search, Loader2, Upload, ImageIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
-import { getDataByDNI } from '@/actions';
+import { createInscription, getDataByDNI } from '@/actions';
+import { InscriptionForm } from '@/interface';
 
-interface FormData {
-  tipoDocumento: string
-  numeroDocumento: string
-  nombres: string
-  apellidos: string
-  email: string
-  celular: string
-  universidad: string
-  carrera: string
-  password: string
-  confirmPassword: string
-  voucher: File | null
-}
 
 const Formulario = () => {
   const [isSearching, setIsSearching] = useState(false)
@@ -31,7 +19,7 @@ const Formulario = () => {
   const {
     register, handleSubmit, watch, setValue, clearErrors,
     formState: { errors, isValid }
-  } = useForm<FormData>({
+  } = useForm<InscriptionForm>({
     mode: 'onChange'
   })
 
@@ -84,12 +72,23 @@ const Formulario = () => {
   }
 
   // Submit Formulario
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: InscriptionForm) => {
+    try {
+      // Incluir el archivo del voucher desde el estado local
+      const formDataWithVoucher = {
+        ...data,
+        voucher: selectedFile
+      };
 
-    console.log('Datos del formulario:', data)
-    // console.log('Archivo seleccionado:', selectedFile)
-    // Aquí puedes agregar la lógica para enviar los datos
-    alert('Formulario enviado exitosamente!')
+      const result = await createInscription(formDataWithVoucher)
+
+      if (result.ok) {
+        alert(`${result.message}\nBienvenido ${result.userName}!`);
+      }
+    } catch (error) {
+      console.error('Error al enviar formulario:', error);
+      alert(error instanceof Error ? error.message : 'Error al procesar la inscripción');
+    }
   }
 
   // Funciones para manejar el archivo
