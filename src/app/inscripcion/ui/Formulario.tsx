@@ -8,6 +8,7 @@ import { Search, Loader2, Upload, ImageIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { createInscription, getDataByDNI } from '@/actions';
 import { InscriptionForm } from '@/interface';
+import { toast } from 'sonner';
 
 
 const Formulario = () => {
@@ -48,7 +49,9 @@ const Formulario = () => {
   // Buscar API Reniec
   const searchReniec = async () => {
     if (!numeroDocumento || numeroDocumento.length !== 8 || !/^\d{8}$/.test(numeroDocumento)) {
-      alert('Por favor, ingrese un DNI válido de exactamente 8 dígitos')
+      toast.error('DNI debe tener 8 dígitos', {
+        duration: 3000,
+      });
       return
     }
 
@@ -62,7 +65,10 @@ const Formulario = () => {
 
     } catch (error) {
       console.error('Error al buscar DNI:', error)
-      alert('No se encontraron datos para este DNI. Por favor, ingrese los datos manualmente.')
+      toast.error("DNI no encontrado", {
+        description: "Ingrese los datos manualmente",
+        duration: 3000,
+      });
       setValue('nombres', '', { shouldValidate: true })
       setValue('apellidos', '', { shouldValidate: true })
       setIsDataFromAPI(false)
@@ -78,11 +84,19 @@ const Formulario = () => {
       const result = await createInscription(data)
 
       if (result.ok) {
-        alert(`${result.message}\nBienvenido ${result.userName}!`);
+        toast.success(`${result.message}\n¡Bienvenido ${result.userName}!`, {
+          duration: 3000,
+        });
+      } else {
+        toast.error(result.message, {
+          duration: 3000,
+        });
       }
     } catch (error) {
       console.error('Error al enviar formulario:', error);
-      alert(error instanceof Error ? error.message : 'Error al procesar la inscripción');
+      toast.error(error instanceof Error ? error.message : 'Error en el registro', {
+        duration: 3000,
+      });
     }
   }
 
@@ -90,9 +104,16 @@ const Formulario = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      setSelectedFile(file)
-      setValue('voucher', file, { shouldValidate: true })
-      clearErrors('voucher')
+      if (file.type.startsWith('image/')) {
+        setSelectedFile(file)
+        setValue('voucher', file, { shouldValidate: true })
+        clearErrors('voucher')
+      } else {
+        toast.error('Solo se permiten imágenes', {
+          duration: 3000,
+        });
+        e.target.value = ''; // Limpiar el input
+      }
     } else {
       setSelectedFile(null)
       setValue('voucher', null, { shouldValidate: true })
@@ -121,7 +142,9 @@ const Formulario = () => {
         setValue('voucher', file, { shouldValidate: true })
         clearErrors('voucher')
       } else {
-        alert('Por favor, selecciona solo archivos de imagen')
+        toast.error('Solo se permiten imágenes', {
+          duration: 3000,
+        });
       }
     }
   }

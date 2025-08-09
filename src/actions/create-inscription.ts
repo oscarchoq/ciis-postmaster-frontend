@@ -34,7 +34,7 @@ export const createInscription = async (data: InscriptionForm) => {
 
     if (!response.ok) {
       const errorData: InscriptionResponseError = await response.json();
-      throw new Error(errorData.reason);
+      throw new Error(errorData.reason || "Error al procesar la inscripción");
     }
 
     const result: InscriptionResponse = await response.json()
@@ -59,13 +59,7 @@ export const createInscription = async (data: InscriptionForm) => {
 
     // Subir archivo si hay token, user cookie y el archivo
     if (token && userCookie && data.voucher) {
-      const uploadResult = await uploadFiles(token, userCookie, data.voucher);
-      if (!uploadResult.ok) {
-        return {
-          ok: false,
-          message: uploadResult.message,
-        }
-      }
+      await uploadFiles(token, userCookie, data.voucher);
     }
 
     return {
@@ -78,7 +72,7 @@ export const createInscription = async (data: InscriptionForm) => {
     console.log(error)
     return {
       ok: false,
-      message: "error al inscribirse",
+      message: error instanceof Error ? error.message : "Error al inscribirse",
     }
   }
 };
@@ -107,10 +101,7 @@ const uploadFiles = async (token: string, userCookie: string, voucherFile: File)
     if (!response.ok) {
       const errorText = await response.text();
       console.error("Error al subir archivos:", errorText);
-      return {
-        ok: false,
-        message: "Error al subir los archivos"
-      };
+      throw new Error("Error al subir los archivos");
     }
     
     return {
@@ -120,9 +111,6 @@ const uploadFiles = async (token: string, userCookie: string, voucherFile: File)
     
   } catch (error) {
     console.error("Error en uploadFiles:", error);
-    return {
-      ok: false,
-      message: "Error al subir los archivos"
-    };
+    throw new Error("Error al subir los archivos");
   }
 };

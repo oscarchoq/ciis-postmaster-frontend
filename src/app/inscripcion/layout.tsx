@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/sonner";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -15,6 +16,7 @@ export default function RootLayout({
       <main className="">
         {children}
       </main>
+      <Toaster richColors position="top-center" theme="light" />
     </>
   );
 }
