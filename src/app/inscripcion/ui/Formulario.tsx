@@ -74,13 +74,8 @@ const Formulario = () => {
   // Submit Formulario
   const onSubmit = async (data: InscriptionForm) => {
     try {
-      // Incluir el archivo del voucher desde el estado local
-      const formDataWithVoucher = {
-        ...data,
-        voucher: selectedFile
-      };
 
-      const result = await createInscription(formDataWithVoucher)
+      const result = await createInscription(data)
 
       if (result.ok) {
         alert(`${result.message}\nBienvenido ${result.userName}!`);
