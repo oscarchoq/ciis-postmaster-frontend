@@ -16,19 +16,17 @@ const Formulario = () => {
   const [isDataFromAPI, setIsDataFromAPI] = useState(false)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [dragActive, setDragActive] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const {
     register, handleSubmit, watch, setValue, clearErrors,
-    formState: { errors, isValid }
+    formState: { errors }
   } = useForm<InscriptionForm>({
     mode: 'onChange'
   })
 
   const tipoDocumento = watch('tipoDocumento')
   const numeroDocumento = watch('numeroDocumento')
-
-  // Verificar si el formulario está completo y válido
-  const isFormValid = isValid && selectedFile !== null && Object.keys(errors).length === 0
 
   useEffect(() => {
     register('tipoDocumento', {
@@ -79,14 +77,31 @@ const Formulario = () => {
 
   // Submit Formulario
   const onSubmit = async (data: InscriptionForm) => {
+    setIsSubmitting(true)
+    
     try {
-
       const result = await createInscription(data)
 
       if (result.ok) {
         toast.success(`${result.message}\n¡Bienvenido ${result.userName}!`, {
-          duration: 3000,
+          duration: 5000,
         });
+        
+        // Resetear el formulario
+        setValue('tipoDocumento', '')
+        setValue('numeroDocumento', '')
+        setValue('nombres', '')
+        setValue('apellidos', '')
+        setValue('email', '')
+        setValue('celular', '')
+        setValue('universidad', '')
+        setValue('carrera', '')
+        setValue('password', '')
+        setValue('confirmPassword', '')
+        setValue('voucher', null)
+        setSelectedFile(null)
+        setIsDataFromAPI(false)
+        
       } else {
         toast.error(result.message, {
           duration: 3000,
@@ -97,6 +112,8 @@ const Formulario = () => {
       toast.error(error instanceof Error ? error.message : 'Error en el registro', {
         duration: 3000,
       });
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -166,6 +183,7 @@ const Formulario = () => {
               </Label>
               <Select
                 value={tipoDocumento}
+                disabled={isSubmitting}
                 onValueChange={(value) => {
                   setValue('tipoDocumento', value, { shouldValidate: true })
                 }}
@@ -194,6 +212,7 @@ const Formulario = () => {
                   type="text"
                   placeholder={tipoDocumento === 'dni' ? '12345678' : 'número de documento'}
                   className={`border-zinc-300 flex-1 ${errors.numeroDocumento ? 'border-red-500' : ''}`}
+                  disabled={isSubmitting}
                   {...register('numeroDocumento', {
                     required: 'Número de documento requerido',
                     validate: (value) => {
@@ -219,7 +238,7 @@ const Formulario = () => {
                     variant="default"
                     size="icon"
                     onClick={searchReniec}
-                    disabled={isSearching || !numeroDocumento || numeroDocumento.length !== 8 || !/^\d{8}$/.test(numeroDocumento)}
+                    disabled={isSearching || !numeroDocumento || numeroDocumento.length !== 8 || !/^\d{8}$/.test(numeroDocumento) || isSubmitting}
                     className=" bg-[#000126] text-white"
                   >
                     {isSearching ? (
@@ -245,7 +264,7 @@ const Formulario = () => {
                 type="text"
                 placeholder="Ingresa tus nombres"
                 className={`border-zinc-300 ${isDataFromAPI ? 'bg-zinc-50' : ''} ${errors.nombres && !isDataFromAPI ? 'border-red-500' : ''}`}
-                disabled={isDataFromAPI}
+                disabled={isDataFromAPI || isSubmitting}
                 {...register('nombres', {
                   required: 'Nombres requeridos',
                   minLength: {
@@ -273,7 +292,7 @@ const Formulario = () => {
                 type="text"
                 placeholder="Ingresa tus apellidos"
                 className={`border-zinc-300 ${isDataFromAPI ? 'bg-zinc-50' : ''} ${errors.apellidos && !isDataFromAPI ? 'border-red-500' : ''}`}
-                disabled={isDataFromAPI}
+                disabled={isDataFromAPI || isSubmitting}
                 {...register('apellidos', {
                   required: 'Apellidos requeridos',
                   minLength: {
@@ -301,6 +320,7 @@ const Formulario = () => {
                 type="email"
                 placeholder="ejemplo@correo.com"
                 className={`border-zinc-300 ${errors.email ? 'border-red-500' : ''}`}
+                disabled={isSubmitting}
                 {...register('email', {
                   required: 'Email requerido',
                   pattern: {
@@ -324,6 +344,7 @@ const Formulario = () => {
                 type="tel"
                 placeholder="987654321"
                 className={`border-zinc-300 ${errors.celular ? 'border-red-500' : ''}`}
+                disabled={isSubmitting}
                 {...register('celular', {
                   required: 'Celular requerido',
                   pattern: {
@@ -354,6 +375,7 @@ const Formulario = () => {
                 type="text"
                 placeholder="Nombre de tu universidad"
                 className={`border-zinc-300 ${errors.universidad ? 'border-red-500' : ''}`}
+                disabled={isSubmitting}
                 {...register('universidad', {
                   required: 'Universidad requerida',
                   minLength: {
@@ -377,6 +399,7 @@ const Formulario = () => {
                 type="text"
                 placeholder="Nombre de tu carrera"
                 className={`border-zinc-300 ${errors.carrera ? 'border-red-500' : ''}`}
+                disabled={isSubmitting}
                 {...register('carrera', {
                   required: 'Carrera requerida',
                   minLength: {
@@ -406,6 +429,7 @@ const Formulario = () => {
                 type="password"
                 placeholder="Ingresa tu contraseña"
                 className={`border-zinc-300 ${errors.password ? 'border-red-500' : ''}`}
+                disabled={isSubmitting}
                 {...register('password', {
                   required: 'Contraseña requerida',
                   minLength: {
@@ -433,6 +457,7 @@ const Formulario = () => {
                 type="password"
                 placeholder="Confirma tu contraseña"
                 className={`border-zinc-300 ${errors.confirmPassword ? 'border-red-500' : ''}`}
+                disabled={isSubmitting}
                 {...register('confirmPassword', {
                   required: 'Confirmar contraseña',
                   validate: (value) => value === watch('password') || 'Las contraseñas no coinciden'
@@ -466,6 +491,7 @@ const Formulario = () => {
                 type="file"
                 accept="image/*"
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                disabled={isSubmitting}
                 onChange={handleFileChange}
               />
 
@@ -512,12 +538,15 @@ const Formulario = () => {
         <div className="pt-4">
           <Button
             type="submit"
-            className={`w-full font-semibold py-3 text-base transition-all duration-300 ${isFormValid
-                ? 'bg-green-600 hover:bg-green-700 text-white'
-                : 'bg-green-500/70 hover:bg-green-600/80 text-white/70'
-              }`}
+            disabled={isSubmitting}
+            className="w-full font-semibold py-3 text-base transition-all duration-300 relative bg-green-700 hover:bg-green-800 text-white"
           >
-            Inscribirme al evento
+            <span className={isSubmitting ? 'mr-6' : ''}>
+              Inscribirme
+            </span>
+            {isSubmitting && (
+              <Loader2 className="absolute right-4 h-5 w-5 animate-spin" />
+            )}
           </Button>
         </div>
 
