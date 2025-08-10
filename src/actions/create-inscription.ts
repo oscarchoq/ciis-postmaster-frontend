@@ -1,6 +1,7 @@
 "use server";
 
 import { InscriptionForm, InscriptionResponse, InscriptionResponseError } from "@/interface";
+import { cookies } from 'next/headers'
 
 export const createInscription = async (data: InscriptionForm) => {
   try {
@@ -43,7 +44,7 @@ export const createInscription = async (data: InscriptionForm) => {
     const rawSetCookie = response.headers.get("set-cookie");
     let token = null;
     let userCookie = null;
-    
+
     if (rawSetCookie) {
       // Extraer token
       const tokenMatch = rawSetCookie.match(/token=([^;]+)/);
@@ -51,7 +52,7 @@ export const createInscription = async (data: InscriptionForm) => {
         token = tokenMatch[1];
       }
     }
-    
+
     // Usa una cookie para subir archivos con el resultado del registro
     if (result) {
       userCookie = encodeURIComponent(JSON.stringify(result));
@@ -62,9 +63,19 @@ export const createInscription = async (data: InscriptionForm) => {
       await uploadFiles(token, userCookie, data.voucher);
     }
 
+    // Esto para usarlo en success
+    const cookieStore = await cookies()
+    cookieStore.set({
+      name: 'user',
+      value: result.name,
+      maxAge: 10,
+      path: '/',
+      httpOnly: true,
+    })
+
     return {
       ok: true,
-      message: "Inscripción creada exitosamente",
+      message: "¡Te has inscrito correctamente!",
       userName: result.name
     }
 
@@ -97,18 +108,18 @@ const uploadFiles = async (token: string, userCookie: string, voucherFile: File)
     };
 
     const response = await fetch("https://ciistacna.com/api/v2/event/15/reservation/ciis?type_attend=estudiantesesis&type_event=ciis", requestOptions);
-    
+
     if (!response.ok) {
       const errorText = await response.text();
       console.error("Error al subir archivos:", errorText);
       throw new Error("Error al subir los archivos");
     }
-    
+
     return {
       ok: true,
       message: "Archivo subido"
     };
-    
+
   } catch (error) {
     console.error("Error en uploadFiles:", error);
     throw new Error("Error al subir los archivos");

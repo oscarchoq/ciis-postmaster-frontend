@@ -6,12 +6,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useState, useEffect } from 'react'
 import { Search, Loader2, Upload, ImageIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
 import { createInscription, getDataByDNI } from '@/actions';
 import { InscriptionForm } from '@/interface';
 import { toast } from 'sonner';
 
 
 const Formulario = () => {
+  const router = useRouter()
   const [isSearching, setIsSearching] = useState(false)
   const [isDataFromAPI, setIsDataFromAPI] = useState(false)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -83,24 +85,9 @@ const Formulario = () => {
       const result = await createInscription(data)
 
       if (result.ok) {
-        toast.success(`${result.message}\n¡Bienvenido ${result.userName}!`, {
-          duration: 5000,
-        });
         
-        // Resetear el formulario
-        setValue('tipoDocumento', '')
-        setValue('numeroDocumento', '')
-        setValue('nombres', '')
-        setValue('apellidos', '')
-        setValue('email', '')
-        setValue('celular', '')
-        setValue('universidad', '')
-        setValue('carrera', '')
-        setValue('password', '')
-        setValue('confirmPassword', '')
-        setValue('voucher', null)
-        setSelectedFile(null)
-        setIsDataFromAPI(false)
+        // Redirigir a la página de éxito
+        router.push('/inscripcion/success')
         
       } else {
         toast.error(result.message, {
