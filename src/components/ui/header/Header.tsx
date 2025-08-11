@@ -64,9 +64,9 @@ export const Header = () => {
           <Link href="#ponentes" className={styles.link} onClick={closeMenu}>PONENTES</Link>
           <Link href="#horario" className={styles.link} onClick={closeMenu}>HORARIO</Link>
           
-           {/*<div className={styles['mobile-only']}>
-            <Link href="#" className={styles.link} onClick={closeMenu}>INSCRIBETE</Link>
-          </div>*/} 
+           <div className={styles['mobile-only']}>
+            <Link href="/inscripcion" className={styles.link} onClick={closeMenu}>INSCRIBETE</Link>
+          </div> 
         </nav>
 
         <div className={styles['header-right']}>

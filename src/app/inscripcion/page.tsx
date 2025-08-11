@@ -1,11 +1,17 @@
 "use client"
 import Image from "next/image"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { IoMdArrowRoundBack } from "react-icons/io"
 import Formulario from "./ui/Formulario"
 
 const InscripcionPage = () => {
   const [showBackText, setShowBackText] = useState(false)
+  const router = useRouter()
+
+  const handleBackClick = () => {
+    router.push("/")
+  }
 
   return (
     <main className="min-h-screen bg-zinc-100">
@@ -16,9 +22,10 @@ const InscripcionPage = () => {
           <div className="max-w-sm w-full mx-auto xl:ml-0 xl:mr-12">
             {/* Logo y volver */}
             <div
-              className="flex items-center gap-3 mb-8 cursor-pointer group"
+              className="inline-flex items-center gap-3 mb-8 cursor-pointer group"
               onMouseEnter={() => setShowBackText(true)}
               onMouseLeave={() => setShowBackText(false)}
+              onClick={handleBackClick}
             >
               <IoMdArrowRoundBack className="w-5 h-5 text-zinc-300 group-hover:text-white transition-colors -ml-6" />
               <div className="relative overflow-hidden">
@@ -40,10 +47,10 @@ const InscripcionPage = () => {
 
               <div className="flex justify-between items-end mb-4">
                 <div>
-                  <h1 className="text-white/70 text-sm mb-1">Inscríbete al evento por</h1>
+                  <h1 className="text-white/70 text-sm md:mb-1">Inscríbete al evento por</h1>
                   <div className="text-white/50 text-xs">Precio especial</div>
                 </div>
-                <div className="text-white font-extrabold font-jetbrains-mono text-3xl">S/. 30.00</div>
+                <div className="text-white font-extrabold font-jetbrains-mono text-xl sm:text-2xl md:text-3xl">S/. 30.00</div>
               </div>
 
               <div className="w-full h-px bg-white/20 mb-4"></div>

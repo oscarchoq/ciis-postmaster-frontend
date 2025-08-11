@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { Counter } from './counter/Counter'
+import { InscriptionButton } from './ui/InscriptionButton'
 
 export const HeroSection = () => {
   return (
@@ -37,6 +38,9 @@ export const HeroSection = () => {
 
         {/* Contador */}
         <Counter />
+
+        {/* Call to Action - Inscripción */}
+        <InscriptionButton />
 
       </div>
 
