@@ -261,7 +261,8 @@ const Formulario = () => {
                   pattern: {
                     value: /^[a-zA-ZÀ-ÿ\s]+$/,
                     message: 'Solo letras y espacios'
-                  }
+                  },
+                  validate: (value) => value.trim() === value || 'Evita espacios al inicio y final'
                 })}
               />
               {errors.nombres && !isDataFromAPI && (
@@ -289,7 +290,8 @@ const Formulario = () => {
                   pattern: {
                     value: /^[a-zA-ZÀ-ÿ\s]+$/,
                     message: 'Solo letras y espacios'
-                  }
+                  },
+                  validate: (value) => value.trim() === value || 'Evita espacios al inicio y final'
                 })}
               />
               {errors.apellidos && !isDataFromAPI && (
@@ -328,10 +330,15 @@ const Formulario = () => {
               </Label>
               <Input
                 id="celular"
-                type="tel"
+                type="text"
                 placeholder="987654321"
                 className={`border-zinc-300 ${errors.celular ? 'border-red-500' : ''}`}
                 disabled={isSubmitting}
+                onInput={(e) => {
+                  // Solo permitir números
+                  const target = e.target as HTMLInputElement;
+                  target.value = target.value.replace(/[^0-9]/g, '');
+                }}
                 {...register('celular', {
                   required: 'Celular requerido',
                   pattern: {
@@ -368,7 +375,8 @@ const Formulario = () => {
                   minLength: {
                     value: 3,
                     message: 'Mín. 3 caracteres'
-                  }
+                  },
+                  validate: (value) => value.trim() === value || 'Evita espacios al inicio y final'
                 })}
               />
               {errors.universidad && (
@@ -392,7 +400,8 @@ const Formulario = () => {
                   minLength: {
                     value: 3,
                     message: 'Mín. 3 caracteres'
-                  }
+                  },
+                  validate: (value) => value.trim() === value || 'Evita espacios al inicio y final'
                 })}
               />
               {errors.carrera && (
