@@ -1,0 +1,1 @@
+self.__NEXT_FONT_MANIFEST='{"pages":{},"app":{"/home/runner/work/ciis-postmaster-frontend/ciis-postmaster-frontend/src/app/layout":["static/media/9e84385130e79dc9-s.p.woff2","static/media/90cb4c83bb692c13-s.p.woff2","static/media/0106b814569b6baf-s.p.woff2","static/media/bb3ef058b751a6ad-s.p.woff2"]},"appUsingSizeAdjust":true,"pagesUsingSizeAdjust":false}';
