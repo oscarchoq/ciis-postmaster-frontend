@@ -77,7 +77,7 @@ export const Success = ({name}: {name: string}) => {
               ¡Registro exitoso!
             </h1>
             <p className="text-lg text-white/80 font-medium mb-6">
-              Hola, <span className="text-emerald-400 capitalize">{name}</span>
+              Hola, <span className="text-emerald-400 uppercase">{name}</span>
             </p>
           </motion.div>
 

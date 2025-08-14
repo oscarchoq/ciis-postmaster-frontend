@@ -108,16 +108,23 @@ const Formulario = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      if (file.type.startsWith('image/')) {
-        setSelectedFile(file)
-        setValue('voucher', file, { shouldValidate: true })
-        clearErrors('voucher')
-      } else {
+      if (!file.type.startsWith('image/')) {
         toast.error('Solo se permiten imágenes', {
           duration: 3000,
         });
-        e.target.value = ''; // Limpiar el input
+        e.target.value = '';
+        return;
       }
+      if (file.size > 1024 * 1024) { // 1MB
+        toast.error('El tamaño máximo permitido es 1MB', {
+          duration: 3000,
+        });
+        e.target.value = '';
+        return;
+      }
+      setSelectedFile(file)
+      setValue('voucher', file, { shouldValidate: true })
+      clearErrors('voucher')
     } else {
       setSelectedFile(null)
       setValue('voucher', null, { shouldValidate: true })
@@ -141,15 +148,21 @@ const Formulario = () => {
 
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       const file = e.dataTransfer.files[0]
-      if (file.type.startsWith('image/')) {
-        setSelectedFile(file)
-        setValue('voucher', file, { shouldValidate: true })
-        clearErrors('voucher')
-      } else {
+      if (!file.type.startsWith('image/')) {
         toast.error('Solo se permiten imágenes', {
           duration: 3000,
         });
+        return;
       }
+      if (file.size > 1024 * 1024) { // 1MB
+        toast.error('El tamaño máximo permitido es 1MB', {
+          duration: 3000,
+        });
+        return;
+      }
+      setSelectedFile(file)
+      setValue('voucher', file, { shouldValidate: true })
+      clearErrors('voucher')
     }
   }
 
@@ -514,7 +527,7 @@ const Formulario = () => {
                     Arrastra tu voucher aquí o haz clic para seleccionar
                   </p>
                   <p className="text-xs text-zinc-500">
-                    JPG, PNG hasta 5MB
+                    JPG, PNG hasta 1MB
                   </p>
                 </div>
               )}
