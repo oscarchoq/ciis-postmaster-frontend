@@ -3,7 +3,7 @@ import { ItemScheduleProps } from '@/interface';
 
 export const ScheduleItem = ({ topic, start, speaker }: ItemScheduleProps) => {
 
-  const formattedTime = new Date(start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+  const formattedTime = new Date(start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: "America/Lima" });
 
   return (
     <div
