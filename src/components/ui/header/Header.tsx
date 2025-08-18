@@ -64,28 +64,35 @@ export const Header = () => {
           <Link href="#ponentes" className={styles.link} onClick={closeMenu}>PONENTES</Link>
           <Link href="#horario" className={styles.link} onClick={closeMenu}>HORARIO</Link>
           
-           {/*<div className={styles['mobile-only']}>
-            <Link href="#" className={styles.link} onClick={closeMenu}>INSCRIBETE</Link>
-          </div>*/} 
+           <div className={styles['mobile-only']}>
+            <a 
+            href="https://docs.google.com/forms/d/e/1FAIpQLSffLmUTnIv31vyQNQwZY0uKS1I007ewhi3UhiehdEdsEbFF-Q/viewform" 
+            className={styles.link} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            onClick={closeMenu}>INSCRIBETE</a>
+          </div> 
         </nav>
 
-        {/* <div className={styles['header-right']}>
-          <Link
-            href="#INSCRIBIRTE"
+        <div className={styles['header-right']}>
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSffLmUTnIv31vyQNQwZY0uKS1I007ewhi3UhiehdEdsEbFF-Q/viewform"
+            target="_blank"
+            rel="noopener noreferrer"
             className={`${styles.link} font-title text-4xl font-extrabold pb-2`}
           >
             INSCRIBETE
-          </Link>
-        </div> */}
+          </a>
+        </div>
 
         
-        <div className={styles['header-right']}>
+        {/* <div className={styles['header-right']}>
           <div
             className={`${styles.linkNoactive} font-title text-4xl font-extrabold pb-2`}
           >
             PROXIMAMENTE
           </div>
-        </div>
+        </div> */}
 
 
       </div>
