@@ -2,37 +2,37 @@
   "pages": {
     "/_not-found/page": [
       "static/chunks/webpack-e2f3e9e7cebef06e.js",
-      "static/chunks/4bd1b696-d4d5eb693d0a7af9.js",
-      "static/chunks/684-e1dcaaac348d7ffc.js",
+      "static/chunks/4bd1b696-fc09fd79feedbf53.js",
+      "static/chunks/684-ea1b1e7f5cc43ef7.js",
       "static/chunks/main-app-e684cbab10ea4ff6.js",
-      "static/chunks/app/_not-found/page-38eea07280113f8b.js"
+      "static/chunks/app/_not-found/page-f69bfcf222b93b91.js"
     ],
     "/layout": [
       "static/chunks/webpack-e2f3e9e7cebef06e.js",
-      "static/chunks/4bd1b696-d4d5eb693d0a7af9.js",
-      "static/chunks/684-e1dcaaac348d7ffc.js",
+      "static/chunks/4bd1b696-fc09fd79feedbf53.js",
+      "static/chunks/684-ea1b1e7f5cc43ef7.js",
       "static/chunks/main-app-e684cbab10ea4ff6.js",
       "static/css/aa9f1eba2103cae2.css",
-      "static/css/014053eee05266ca.css",
+      "static/css/7418d90d35acf6f0.css",
       "static/chunks/app/layout-ea6c4298c0fa2d8d.js"
     ],
     "/(postmaster)/layout": [
       "static/chunks/webpack-e2f3e9e7cebef06e.js",
-      "static/chunks/4bd1b696-d4d5eb693d0a7af9.js",
-      "static/chunks/684-e1dcaaac348d7ffc.js",
+      "static/chunks/4bd1b696-fc09fd79feedbf53.js",
+      "static/chunks/684-ea1b1e7f5cc43ef7.js",
       "static/chunks/main-app-e684cbab10ea4ff6.js",
       "static/css/14f22e23ecceadc9.css",
-      "static/chunks/259-e35d4d63a85e7472.js",
-      "static/chunks/app/(postmaster)/layout-5e1baac161222d98.js"
+      "static/chunks/906-b2d74c4738e6087c.js",
+      "static/chunks/app/(postmaster)/layout-ffbec64e964ab107.js"
     ],
     "/(postmaster)/page": [
       "static/chunks/webpack-e2f3e9e7cebef06e.js",
-      "static/chunks/4bd1b696-d4d5eb693d0a7af9.js",
-      "static/chunks/684-e1dcaaac348d7ffc.js",
+      "static/chunks/4bd1b696-fc09fd79feedbf53.js",
+      "static/chunks/684-ea1b1e7f5cc43ef7.js",
       "static/chunks/main-app-e684cbab10ea4ff6.js",
       "static/css/14f22e23ecceadc9.css",
-      "static/chunks/259-e35d4d63a85e7472.js",
-      "static/chunks/app/(postmaster)/page-83f3efa0090947a6.js"
+      "static/chunks/906-b2d74c4738e6087c.js",
+      "static/chunks/app/(postmaster)/page-3e19af099f72b539.js"
     ]
   }
 }
